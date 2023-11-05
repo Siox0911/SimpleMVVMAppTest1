@@ -3,44 +3,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
+// migrated using Microsoft.Toolkit.Mvvm.ComponentModel;
+// using Microsoft.Toolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
 using System.Collections;
+using CommunityToolkit.Mvvm.Messaging;
+using SimpleMVVMAppTest1.Model;
 
 namespace SimpleMVVMAppTest1.ViewModel
 {
-    public class MainViewModel : ObservableRecipient
+    public sealed record RelayPerson(SimplePerson Person); // "stiller Briefkasten" central record/data that's exchanged by the CommunityToolkit's mechanisms
+
+    // migrated to partial class
+    // public class MainViewModel : ObservableRecipient
+    public partial class MainViewModel : ObservableRecipient
     {
-        private Model.SimplePerson person;
+        [ObservableProperty]  // class may not have a ctor that's why person initialized here
+        // private Model.SimplePerson person = new SimplePerson { SureName = "Otto", LastName = "Bismarck", Childs = { "Wilhelm", "Marie", "Herbert" }  };
+        private Model.SimplePerson person = new() { SureName = "Otto", LastName = "Bismarck", Childs = { "Wilhelm", "Marie", "Herbert" } };
 
-        public Model.SimplePerson Person
-        {
-            get { return person; }
-            set { SetProperty(ref person, value); }
-        }
-
-        public ICommand ClearName { get; }
-        public ICommand DeleteChildName { get; }
-        public ICommand ResetData { get; }
-
-        public MainViewModel()
-        {
-            person = new Model.SimplePerson();
-            ClearName = new RelayCommand(ClearNameOfPerson);
-            DeleteChildName = new RelayCommand<IList>(DeleteNameOfChildFromList);
-            ResetData = new RelayCommand(GenerateSampleData);
-
-            GenerateSampleData();
-        }
-
-        private void GenerateSampleData()
+        [RelayCommand]
+        private void GenerateSampleData() // method name must by appended "Command" in XAML
         {
             Person.SureName = "Otto";
             Person.LastName = "Bismark";
             Person.Childs = new System.Collections.ObjectModel.ObservableCollection<string> { "Wilhelm", "Marie", "Herbert" };
+            WeakReferenceMessenger.Default.Send(new RelayPerson(Person)); // ~NotifyPropertyChanged
         }
 
+        [RelayCommand]
         private void DeleteNameOfChildFromList(IList? obj)
         {
             if (obj != null)
@@ -53,12 +46,15 @@ namespace SimpleMVVMAppTest1.ViewModel
                     Person.Childs.Remove(item);
                 }
             }
+            WeakReferenceMessenger.Default.Send(new RelayPerson(Person));
         }
 
+        [RelayCommand]
         private void ClearNameOfPerson()
         {
             Person.LastName = String.Empty;
             Person.SureName = String.Empty;
+            WeakReferenceMessenger.Default.Send(new RelayPerson(Person));
         }
     }
 }

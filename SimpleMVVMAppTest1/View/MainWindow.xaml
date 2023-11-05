@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SimpleMVVMAppTest1.View"
         xmlns:localVM="clr-namespace:SimpleMVVMAppTest1.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
@@ -26,9 +25,9 @@
                     <ListView x:Name="lvChilds" ItemsSource="{Binding Person.Childs}"/>
                 </StackPanel>
                 <StackPanel Grid.Column="1">
-                    <Button Content="Lösche Vor- und Nachname" Command="{Binding ClearName}"/>
-                    <Button Content="Lösche Kindernamen" Command="{Binding DeleteChildName}" CommandParameter="{Binding SelectedItems, ElementName=lvChilds}"/>
-                    <Button Content="Reset der Daten" Command="{Binding ResetData}"/>
+                    <Button Content="Lösche Vor- und Nachname" Command="{Binding ClearNameOfPersonCommand}"/>
+                    <Button Content="Lösche Kindernamen" Command="{Binding DeleteNameOfChildFromListCommand}" CommandParameter="{Binding SelectedItems, ElementName=lvChilds}"/>
+                    <Button Content="Reset der Daten" Command="{Binding GenerateSampleDataCommand}"/>
                 </StackPanel>
             </Grid>
         </TabItem>
