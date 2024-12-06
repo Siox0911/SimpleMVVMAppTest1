@@ -4,41 +4,45 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+// migrated using Microsoft.Toolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SimpleMVVMAppTest1.Model
 {
-    public class SimplePerson : ObservableObject
+    public partial class SimplePerson : ObservableObject
     {
-        private string lastName;
+        [ObservableProperty]  // spares the getter setter
+        private string lastName = string.Empty;
 
-        public string LastName
-        {
-            get { return lastName; }
-            set { SetProperty(ref lastName, value); }
-        }
+        //public string LastName
+        //{
+        //    get { return lastName; }
+        //    set { SetProperty(ref lastName, value); }
+        //}
 
-        private string sureName;
+        [ObservableProperty]
+        private string sureName = string.Empty;
 
-        public string SureName
-        {
-            get { return sureName; }
-            set { SetProperty(ref sureName, value); }
-        }
+        //public string SureName
+        //{
+        //    get { return sureName; }
+        //    set { SetProperty(ref sureName, value); }
+        //}
 
-        private ObservableCollection<string> childs;
+        [ObservableProperty]
+        private ObservableCollection<string> childs = new(); // new ObservableCollection<string>();
 
-        public ObservableCollection<string> Childs
-        {
-            get { return childs; }
-            set { SetProperty(ref childs, value); }
-        }
+        //public ObservableCollection<string> Childs
+        //{
+        //    get { return childs; }
+        //    set { SetProperty(ref childs, value); }
+        //}
 
-        public SimplePerson()
-        {
-            childs = new ObservableCollection<string>();
-            lastName = string.Empty;
-            sureName = string.Empty;
-        }
+        //public SimplePerson()
+        //{
+        //    childs = new ObservableCollection<string>();
+        //    lastName = string.Empty;
+        //    sureName = string.Empty;
+        //}
     }
 }
